@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Teo.Co.Co</title>
+
+  <!-- Bootstrap core CSS -->
+  {% load bootstrap4 %}
+ 
+   {# CSS Bootstrap #}
+   {% bootstrap_css %}
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-light bg-light static-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Trabajo Teoría de la computación y la compilación</a>
+    </div>
+  </nav>
+
+  <h3>Lista de objetos en el XML</h3>
+  <!-- Masthead -->
+  {% for objeto in jsonList %}
+  <div class="section">
+      <table class="table table-condensed">
+          {{objeto}}
+      </table>
+  </div>
+{% endfor %}
+
+  <!-- Bootstrap core JavaScript -->
+  {% bootstrap_javascript jquery='full' %}
+ 
+</body>
+
+</html>
