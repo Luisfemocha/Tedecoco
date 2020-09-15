@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Teo.Co.Co</title>
+
+  <!-- Bootstrap core CSS -->
+  {% load bootstrap4 %}
+ 
+   {# CSS Bootstrap #}
+   {% bootstrap_css %}
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Trabajo Teoría de la computación y la compilación</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Comprobar reglas <span class="sr-only">(current)</span></a>
+        </li>
+        {% if jsonList %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Ver partes del diagrama
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <form method="POST" action="conceptos" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" class="form-control form-control-lg" value="{{jsonList}}" name="contenidoJson">
+              <button type="submit" class="btn btn-block btn-lg btn-primary">Conceptos</button>
+            </form>
+            <form method="POST" action="notas" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" class="form-control form-control-lg" value="{{jsonList}}" name="contenidoJson">
+              <button type="submit" class="btn btn-block btn-lg btn-primary">Notas</button>
+            </form>
+            <form method="POST" action="conexiones" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" class="form-control form-control-lg" value="{{jsonList}}" name="contenidoJson">
+              <button type="submit" class="btn btn-block btn-lg btn-primary">Conexiones</button>
+            </form>
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+  {% block content %}
+  
+  {% endblock %}
+  <!-- Bootstrap core JavaScript -->
+  {% bootstrap_javascript jquery='full' %}
+ 
+</body>
+
+</html>

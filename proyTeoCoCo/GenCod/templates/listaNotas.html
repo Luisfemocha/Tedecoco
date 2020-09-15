@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Lista de Notas</h2>
+<table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Contenido</th>
+      </tr>
+    </thead>
+    {% for valor in listaConceptos %}
+    <tbody>
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{valor}}</td>
+      </tr>  
+    </tbody>
+    {% endfor %}
+  </table>
+  {% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Lista de conexiones</h2>
+<table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">id</th>
+        <th scope="col">desde</th>
+        <th scope="col">hasta</th>
+      </tr>
+    </thead>
+    {% for objeto in listaConceptos %}
+    <tbody>
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{objeto.0}}</td>
+        <td>{{objeto.1}}</td>
+        <td>{{objeto.2}}</td>
+      </tr>  
+    </tbody>
+    {% endfor %}
+  </table>
+  {% endblock %}

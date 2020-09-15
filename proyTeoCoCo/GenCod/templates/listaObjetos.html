@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% extends 'base.html' %}
 <html lang="en">
 
 <head>
@@ -21,12 +22,9 @@
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-light bg-light static-top">
-    <div class="container">
-      <a class="navbar-brand" href="#">Trabajo Teoría de la computación y la compilación</a>
-    </div>
-  </nav>
 
+  {% block content %}
+  
   <h3>Lista de objetos en el XML</h3>
   <!-- Masthead -->
   {% for objeto in jsonList %}
@@ -36,6 +34,7 @@
       </table>
   </div>
 {% endfor %}
+{% endblock %}
 
   <!-- Bootstrap core JavaScript -->
   {% bootstrap_javascript jquery='full' %}
