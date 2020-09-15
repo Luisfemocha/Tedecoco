@@ -8,5 +8,5 @@ urlpatterns = [
     path('conceptos',views.conceptos,name='conceptos'),
     path('notas',views.notas,name='notas'),
     path('conexiones',views.conexiones,name='conexiones'),
-    #path('comprobar',views.comprobar,name='comprobar'),
+    path('comprobar',views.comprobar,name='comprobar'),
 ]

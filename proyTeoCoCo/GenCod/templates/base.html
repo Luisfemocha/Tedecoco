@@ -29,10 +29,13 @@
   
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Comprobar reglas <span class="sr-only">(current)</span></a>
-        </li>
         {% if jsonList %}
+        <form method="POST" action="comprobar" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" class="form-control form-control-lg" value="{{jsonList}}" name="contenidoJson">
+          <button type="submit" class="btn btn-light btn-lg btn-primary">Comprobar reglas</button>
+        </form>
+        
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Ver partes del diagrama
@@ -41,17 +44,17 @@
             <form method="POST" action="conceptos" enctype="multipart/form-data">
               {% csrf_token %}
               <input type="hidden" class="form-control form-control-lg" value="{{jsonList}}" name="contenidoJson">
-              <button type="submit" class="btn btn-block btn-lg btn-primary">Conceptos</button>
+              <button type="submit" class="btn btn-light btn-lg btn-primary">Conceptos</button>
             </form>
             <form method="POST" action="notas" enctype="multipart/form-data">
               {% csrf_token %}
               <input type="hidden" class="form-control form-control-lg" value="{{jsonList}}" name="contenidoJson">
-              <button type="submit" class="btn btn-block btn-lg btn-primary">Notas</button>
+              <button type="submit" class="btn btn-light btn-lg btn-primary">Notas</button>
             </form>
             <form method="POST" action="conexiones" enctype="multipart/form-data">
               {% csrf_token %}
               <input type="hidden" class="form-control form-control-lg" value="{{jsonList}}" name="contenidoJson">
-              <button type="submit" class="btn btn-block btn-lg btn-primary">Conexiones</button>
+              <button type="submit" class="btn btn-light btn-lg btn-primary">Conexiones</button>
             </form>
           </div>
         </li>

@@ -68,3 +68,9 @@ def conexiones(request):
           lista.append((A[i]["@source"],dato(A[i]["@source"],A),dato(A[i]["@target"],A)))
     return render(request,"listaConexiones.html",{'listaConceptos':lista})
 
+def comprobar(request):
+    Aux=request.POST['contenidoJson']
+    Aux=Aux.replace("\'", "\"")
+    A=json.loads(Aux)
+    return render(request,"comprobar.html")
+
