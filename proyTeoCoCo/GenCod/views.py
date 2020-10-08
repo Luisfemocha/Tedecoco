@@ -79,7 +79,17 @@ def identificar(request):
     fin=json.dumps(xmltodict.parse(final))
     inicio=json.loads(fin)
     json_pretty = json.dumps(inicio, sort_keys=True, indent=4)
-    if(triadaFormulario(inicio['mxGraphModel']['root']['mxCell'])):
-        return render(request,"identificar.html",{'mensaje':"Existe un formulario",'jsonList': inicio['mxGraphModel']['root']['mxCell']})
+    objetos=inicio['mxGraphModel']['root']['mxCell']
+    if(triadaFormulario(objetos)):
+        vistas,forms=generarHTML(objetos)
+        triadas=triadaEstructural(objetos)
+        mensajes=htmlFormulario(triadas,vistas,forms)
+        contenido=generarHtmlFormulario(mensajes,vistas) 
+        return render(request,"identificar.html",{'mensaje1':"Existe un formulario",'jsonList': objetos})
     else:
-        return render(request,"identificar.html",{'mensaje':"No Hay formulario",'jsonList': inicio['mxGraphModel']['root']['mxCell']})
+        return render(request,"identificar.html",{'mensaje2':"No Hay formulario",'jsonList': objetos})
+
+
+def formularioCreado(request):
+    pwd = os.path.dirname(__file__)
+    return render(request,pwd +'\\templates\\generados\\formulario.html')

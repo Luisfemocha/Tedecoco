@@ -1,4 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>{{mensaje}}</h1>
+{% if mensaje1 %}
+    <div class="container">
+        <h2>
+            {{mensaje1}}
+        </h2>
+        <a href="formularioCreado">Ver Formulario</a>
+    </div>
+{% else %}
+    <h3>{{mensaje2}}</h3>
+{% endif %}
 {% endblock %}
