@@ -12,24 +12,17 @@ import xml.etree.ElementTree as ET
 import re
 from xml.dom import minidom
 import codecs
+from .funciones import *
 
 def index(request):
     return render(request,"index.html")
 
 def inicio(request):
-    nombre=request.FILES['archivoXml']
-    tree = ET.parse(nombre) #Se elige el archivo 
-    root = tree.getroot()
-    decoded_data = base64.b64decode(root[0].text)
-    res=zlib.decompress(decoded_data , -15)
-    aux=str(res)
-    final=unquote(aux)
-    final=final[2:len(final)-1] #Formato XML
-    fin=json.dumps(xmltodict.parse(final))
-    inicio=json.loads(fin)
-    json_pretty = json.dumps(inicio, sort_keys=True, indent=4)
-    #return HttpResponse(json.dumps(inicio['mxGraphModel']['root']['mxCell'],indent=4))
-    return render(request, "listaObjetos.html", {'jsonList': inicio['mxGraphModel']['root']['mxCell']})
+    Aux=request.POST['contenidoJson']
+    Aux=Aux.replace("\'", "\"")
+    A=json.loads(Aux)
+    lista=[]
+    return render(request, "listaObjetos.html", {'jsonList': A})
 
 def conceptos(request):
     Aux=request.POST['contenidoJson']
@@ -74,3 +67,19 @@ def comprobar(request):
     A=json.loads(Aux)
     return render(request,"comprobar.html")
 
+def identificar(request):
+    nombre=request.FILES['archivoXml']
+    tree = ET.parse(nombre) #Se elige el archivo 
+    root = tree.getroot()
+    decoded_data = base64.b64decode(root[0].text)
+    res=zlib.decompress(decoded_data , -15)
+    aux=str(res)
+    final=unquote(aux)
+    final=final[2:len(final)-1] #Formato XML
+    fin=json.dumps(xmltodict.parse(final))
+    inicio=json.loads(fin)
+    json_pretty = json.dumps(inicio, sort_keys=True, indent=4)
+    if(triadaFormulario(inicio['mxGraphModel']['root']['mxCell'])):
+        return render(request,"identificar.html",{'mensaje':"Existe un formulario",'jsonList': inicio['mxGraphModel']['root']['mxCell']})
+    else:
+        return render(request,"identificar.html",{'mensaje':"No Hay formulario",'jsonList': inicio['mxGraphModel']['root']['mxCell']})

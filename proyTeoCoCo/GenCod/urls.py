@@ -9,4 +9,5 @@ urlpatterns = [
     path('notas',views.notas,name='notas'),
     path('conexiones',views.conexiones,name='conexiones'),
     path('comprobar',views.comprobar,name='comprobar'),
+    path('identificar',views.identificar,name='identificar'),
 ]
