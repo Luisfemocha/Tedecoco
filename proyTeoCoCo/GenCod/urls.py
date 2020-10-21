@@ -11,4 +11,6 @@ urlpatterns = [
     path('comprobar',views.comprobar,name='comprobar'),
     path('identificar',views.identificar,name='identificar'),
     path('formularioCreado',views.formularioCreado,name='formularioCreado'),
+    path('tablaCreada',views.tablaCreada,name='tablaCreada'),
+    path('modificar',views.modificar,name='modificar'),
 ]

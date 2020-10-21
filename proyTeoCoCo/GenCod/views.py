@@ -53,7 +53,7 @@ def conexiones(request):
     flechas=[]
     def dato(id,A):
         for i in range(2, len(A)):
-            if id in A[i]["@id"]:
+            if id == A[i]["@id"]:
                 return A[i]["@value"]
     
     for i in range(2, len(A)):
@@ -80,11 +80,20 @@ def identificar(request):
     inicio=json.loads(fin)
     json_pretty = json.dumps(inicio, sort_keys=True, indent=4)
     objetos=inicio['mxGraphModel']['root']['mxCell']
-    if(triadaFormulario(objetos)):
+    if(revisarDiagrama(objetos)):
         vistas,forms=generarHTML(objetos)
         triadas=triadaEstructural(objetos)
         mensajes=htmlFormulario(triadas,vistas,forms)
-        contenido=generarHtmlFormulario(mensajes,vistas) 
+        contenido=generarHtmlFormulario(mensajes,vistas)
+        botones,tipos_datos, nombres_atr=datosTabla(triadas)
+        print("/////////////")
+        print(botones)
+        print(tipos_datos)
+        print(nombres_atr)
+        print("/////////////")
+        mensajes2=htmlTabla(nombres_atr)
+        print(mensajes2)
+        generarHtmlTabla(mensajes2) 
         return render(request,"identificar.html",{'mensaje1':"Existe un formulario",'jsonList': objetos})
     else:
         return render(request,"identificar.html",{'mensaje2':"No Hay formulario",'jsonList': objetos})
@@ -93,3 +102,10 @@ def identificar(request):
 def formularioCreado(request):
     pwd = os.path.dirname(__file__)
     return render(request,pwd +'\\templates\\generados\\formulario.html')
+
+def tablaCreada(request):
+    pwd = os.path.dirname(__file__)
+    return render(request,pwd +'\\templates\\generados\\tabla.html')
+
+def modificar(request):
+    return HttpResponse("Falta eso")

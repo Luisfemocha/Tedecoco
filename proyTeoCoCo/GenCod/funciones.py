@@ -21,7 +21,7 @@ import os
 
 def dato(id,A):
     for i in range(2, len(A)):
-        if id in A[i]["@id"]:
+        if id == A[i]["@id"]:
             return A[i]["@value"]
 
 
@@ -107,13 +107,14 @@ def triadaEstructural( A):
   for fle in listaFlechas:
     desdeHasta.append(((fle["@source"]),dato(fle["@source"], A),dato(fle["@target"], A))) 
   print(" ")
-  final=[desdeHasta[x] for x in range(len(desdeHasta)) if desdeHasta[x][1]=='tiene']
+  final=[desdeHasta[x] for x in range(len(desdeHasta)) if desdeHasta[x][1]=='tiene' or desdeHasta[x][1]=='CONTENIDO']
   
   relacion=[]
   for i in range(len(final)):
     for j in range(len(desde)):
       if(final[i][0]== desde[j][2]):        
-        relacion.append((desde[j][1],  dato(final[i][0], A) ,(final[i][2]) ))   
+        relacion.append((desde[j][1],  dato(final[i][0], A) ,(final[i][2]) ))
+        
 
   return  relacion
 
@@ -145,19 +146,20 @@ def atributos(triadas, forms):
   atributos.pop()
   atrib=[re.split(r':',x)for x in atributos]
   #print(atrib)
-
-  k='<br>*atributo1'
-  def arreglar(k):
-    j=re.split(r'[<br>]*[*]',k)
-    j.pop(0)
-    return j
   tipos_datos=[atrib[i][1]for i in range(len(atrib))]
+  for i in range(len(tipos_datos)):
+    tipos_datos[i]=tipos_datos[i].replace(" ","")
   nombres_atr=[arreglar(atrib[i][0]) for i in range(len(atrib))]
   #print(tipos_datos)
   nombres_atr=functools.reduce(operator.iconcat, nombres_atr, [])
   #print(nombres_atr)
   return (tipos_datos, nombres_atr)
 
+
+def arreglar(k):
+    j=re.split(r'[<br>]*[*]',k)
+    j.pop(0)
+    return j
 
 def htmlFormulario(triadas,vistas,forms):
 
@@ -166,18 +168,19 @@ def htmlFormulario(triadas,vistas,forms):
 
     for vista in vistas:
       
-      if(triada[0]==vista):      
-        if(re.match(r"(\bFORM\b) (?<!\S)\w+(?!\S)", triada[2])):
+      if(re.match(r"(\bFORM\b) (?<!\S)\w+(?!\S)", triada[2])and re.match(r"(\bVISTA\b) (\bhome\b)", vista)):
           nombre_form=triada[2]
           nombre_form=nombre_form.replace('FORM ', '') 
           tipos_datos, nombres_atr= atributos(triadas, forms)     
           mensajes.append((vistas.index(vista),"<form action="+"\""+"mmmm"+"\""+" metod="+"\""+"post"+"\""+" id="+"\""+nombre_form+"\" "+"nombre="+"\""+nombre_form+"\" "+">"))
           for i in range(len(tipos_datos)):
             mensajes.append((vistas.index(vista),nombres_atr[i]+":<br>"))
-            
-            mensajes.append((vistas.index(vista),"<input type="+"\""+tipos_datos[i]+"\""+" name="+"\""+nombres_atr[i]+"\""+" id="+"\""+nombres_atr[i]+"\""+"class='form-control' ><br>"))
+            mensajes.append((vistas.index(vista),"<input type="+"\""+tipos_datos[i]+"\""+" name="+"\""+nombres_atr[i]+"\""+" id="+"\""+nombres_atr[i]+"\""+"><br>"))
           mensajes.append((vistas.index(vista),"</form>"))
-        elif(re.match(r"(\bBOTON\b) (?<!\S)\w+(?!\S)", triada[2])):
+  for vista in vistas:
+    if(re.match(r"(\bVISTA\b) (\bhome\b)", vista)):
+      for triada in triadas:
+        if(re.match(r"(\bBOTON\b) (?<!\S)\w+(?!\S)", triada[2] )and re.match(r"(\bVISTA\b) (\bhome\b)", triada[0])):
           result = re.match(r'\S*\s(\S*)', triada[2])
           p=result.group(1)
 
@@ -187,7 +190,6 @@ def htmlFormulario(triadas,vistas,forms):
 
 def generarHtmlFormulario(mensajes,vistas):
   pwd = os.path.dirname(__file__)
-  print(pwd)
   contenido=''
   for k in range(len(mensajes)):
     for j in range (len(vistas)):
@@ -196,22 +198,193 @@ def generarHtmlFormulario(mensajes,vistas):
         contenido += mensajes[k][1] + '\n'
 
   for i in range(len(vistas)):
-    f=open(pwd + '\\templates\\generados\\formulario.html','wt')
-    
-    mensaje = """
-    {% extends 'base.html' %}
-    {% block content %}
-    <html>
-    <div class="container">
-    <head>"""+vistas[i]+"""</head>
-    <body><p> Ensayo primer formulario</p>
-    
-        """+contenido+""" 
-    </div>
-    </body>
-    </html>
-    {% endblock %}
-    """
-    f.write(mensaje)
-    f.close()
+    if(re.match(r"(\bVISTA\b) (\bhome\b)", vistas[i])):
+      f=open(pwd + '\\templates\\generados\\formulario.html','wt')
+      
+      mensaje = """
+          {% extends 'base.html' %}
+          {% block content %}
+          <html>
+          <div class="container">
+          <head>"""+vistas[i]+"""</head>
+          
+              """+contenido+""" 
+          </div>
+          </body>
+          </html>
+          {% endblock %}
+          """
+      f.write(mensaje)
+      f.close()
   return contenido
+
+def concepto(A):
+    listaConceptos=[]
+    for i in range(2, len(A)):
+        if "rounded=0" in A[i]['@style'] and "dashed=1" not in A[i]['@style'] and "edgeStyle=orthogonalEdgeStyle" not in A[i]['@style'] and "@value" in A[i] and A[i]['@value'] != "":
+            listaConceptos.append(A[i]["@value"])
+            #print ("Es un concepto que dice: ", A[i]["@value"])
+    return listaConceptos
+
+def revisarDiagrama(A):
+  desdeHasta=[]
+  listaFlechas= flecha(A)
+  conp=revisarConceptos(A)
+  if conp==False:
+    return False
+  res=False
+  for fle in listaFlechas:
+    desdeHasta.append((dato(fle["@source"], A),dato(fle["@target"], A)))
+  for i in range(len(desdeHasta)):
+    #DESDE
+    formulario = re.match(r"(\bFORM\b) (?<!\S)\w+(?!\S)", desdeHasta[i][0])
+    boton = re.match(r"(\bBOTON\b) (?<!\S)\w+(?!\S)", desdeHasta[i][0])
+    vista = re.match(r"(\bVISTA\b) (?<!\S)\w+(?!\S)", desdeHasta[i][0])
+    contenido = re.match(r"(\bCONTENIDO\b)", desdeHasta[i][0])
+    tabla = re.match(r"(\bTABLA\b)", desdeHasta[i][0])
+    vistas = re.match(r"(\bVISTAS\b)", desdeHasta[i][0])
+    tiene = re.match(r"(\btiene\b)", desdeHasta[i][0])
+    if vistas:
+      vista2 = re.match(r"(\bVISTA\b) (?<!\S)\w+(?!\S)", desdeHasta[i][1])
+      if vista2:
+        res=True
+      else:
+        return "No es correcta la sintaxis, error en VISTA"
+    elif boton:
+      vista2 = re.match(r"(\bVISTA\b) (?<!\S)\w+(?!\S)", desdeHasta[i][1])
+      if vista2:
+        res=True
+      else:
+        return "No es correcta la sintaxis, error en BOTON a vista"
+    elif vista:
+      tiene2 = re.match(r"(\btiene\b)", desdeHasta[i][1])
+      if tiene2:
+        res=True
+      else:
+        return "No es correcta la sintaxis, error en VISTA a tiene"
+    elif formulario:
+      tiene2 = re.match(r"(\btiene\b)", desdeHasta[i][1])
+      if tiene2:
+        res=True
+      else:
+        return "No es correcta la sintaxis, error en FORM a tiene"
+    elif tiene:
+      formulario2 = re.match(r"(\bFORM\b) (?<!\S)\w+(?!\S)", desdeHasta[i][1])
+      boton2 = re.match(r"(\bBOTON\b) (?<!\S)\w+(?!\S)", desdeHasta[i][1])
+      contenido2 = re.match(r"(\bCONTENIDO\b)", desdeHasta[i][1])
+      tabla2 = re.match(r"(\bTABLA\b)", desdeHasta[i][1])
+      nota=re.match(r"(^'*.*;$)", desdeHasta[i][1])
+      if formulario2 or boton2 or contenido2 or tabla2:
+        res=True
+      elif nota:
+        res=True
+      else:
+        return "No es correcta la sintaxis de algún tiene"
+    elif tabla:
+      tiene2 = re.match(r"(\btiene\b)", desdeHasta[i][1])
+      if tiene2:
+        res=True
+      else:
+        return "No es correcta la sintaxis, error en FORM a tiene"
+    elif contenido:
+      nota=re.match(r"(^'*.*;$)", desdeHasta[i][1])
+      if nota:
+        res=True
+      else:
+        return "No es correcta la sintaxis de contenido hacia Atributos"
+    else:
+      return False
+
+  if res:
+    print("Es correcta la sintaxis, se manda a crear todo")
+  return res
+
+
+
+
+def revisarConceptos(A):
+  listaConceptos=[]
+  listaConceptos= concepto(A)
+  print(listaConceptos)
+  res=True
+  for i in range(len(listaConceptos)):
+    formulario = re.match(r"(\bFORM\b) (?<!\S)\w+(?!\S)", listaConceptos[i])
+    boton = re.match(r"(\bBOTON\b) (?<!\S)\w+(?!\S)", listaConceptos[i])
+    vista = re.match(r"(\bVISTA\b) (?<!\S)\w+(?!\S)", listaConceptos[i])
+    contenido = re.match(r"(\bCONTENIDO\b)", listaConceptos[i])
+    tabla = re.match(r"(\bTABLA\b)", listaConceptos[i])
+    if formulario or boton or vista or contenido or tabla:
+      res=True
+    else:
+      return False
+  return res
+
+def datosTabla(triadas):
+  botones=[]
+  atributos=[]
+  atr=""
+  for triada in triadas:
+    vista = re.match(r"(\bVISTA\b) (\bleer\b)", triada[0])
+    tiene = re.match(r"(\btiene\b)", triada[0])
+    if vista:
+      boton = re.match(r"(\bBOTON\b) (?<!\S)\w+(?!\S)", triada[2])
+      if boton:
+        botones.append(triada[2][6:])
+    elif tiene:
+      atr=(triada[2])
+
+  atributos=re.split(r';',atr)
+  atributos.pop()
+  atrib=[re.split(r':',x)for x in atributos]
+  tipos_datos=[atrib[i][1]for i in range(len(atrib))]
+  for i in range(len(tipos_datos)):
+    tipos_datos[i]=tipos_datos[i].replace(" ","")
+  nombres_atr=[arreglar(atrib[i][0]) for i in range(len(atrib))]
+  nombres_atr=functools.reduce(operator.iconcat, nombres_atr, []) 
+
+  return botones,tipos_datos, nombres_atr
+
+
+def datosModificar(triadas):
+  botones=[]
+  for triada in triadas:
+    vista = re.match(r"(\bVISTA\b) (\bmodificar\b)", triada[0])
+    if vista:
+      boton = re.match(r"(\bBOTON\b) (?<!\S)\w+(?!\S)", triada[2])
+      if boton:
+        botones.append(triada[2][6:])
+  return botones
+
+def htmlTabla(nombres_atributos):
+  mensajes=[]
+  for i in range(len(nombres_atributos)):
+    mensajes.append("<th scope='col'>"+nombres_atributos[i]+"</th>")
+  return mensajes
+
+def generarHtmlTabla(mensajes):
+  pwd = os.path.dirname(__file__)
+  contenido=""
+  for i in range(len(mensajes)):
+    contenido +=mensajes[i] + '\n'
+  f=open(pwd + '\\templates\\generados\\tabla.html','wt')
+  mensaje = """
+          {% extends 'base.html' %}
+          {% block content %}
+          <html>
+          <body>
+          <div class="container">
+          <h1>VISTA leer</h1>
+          <table class="table">
+          <thead>
+          <tr> 
+              """+contenido+"""
+          </tr> 
+          </thead> 
+          </table>
+          </div>
+          </body>
+          </html>
+          {% endblock %}
+          """
+  f.write(mensaje)
+  f.close()

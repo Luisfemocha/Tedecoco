@@ -1,26 +1,23 @@
 
-    {% extends 'base.html' %}
-    {% block content %}
-    <html>
-    <div class="container">
-    <head>VISTA Home</head>
-    <body><p> Ensayo primer formulario</p>
-    
-        <form action="mmmm" metod="post" id="Formulario1" nombre="Formulario1" >
-atributo1:<br>
-<input type=" string" name="atributo1" id="atributo1"class='form-control' ><br>
-atributo2:<br>
-<input type=" psw" name="atributo2" id="atributo2"class='form-control' ><br>
-atributo3:<br>
-<input type=" number" name="atributo3" id="atributo3"class='form-control' ><br>
+          {% extends 'base.html' %}
+          {% block content %}
+          <html>
+          <div class="container">
+          <head>VISTA home</head>
+          
+              <form action="mmmm" metod="post" id="formulario" nombre="formulario" >
 nombre:<br>
-<input type=" string" name="nombre" id="nombre"class='form-control' ><br>
+<input type="string" name="nombre" id="nombre"><br>
+contrasena:<br>
+<input type="password" name="contrasena" id="contrasena"><br>
+telefono:<br>
+<input type="number" name="telefono" id="telefono"><br>
 </form>
-<button name="Guardar">Guardar</button>
-<button name="Lista">Lista</button>
-
-    </div>
-    </body>
-    </html>
-    {% endblock %}
-    
+<button name="guardar">guardar</button>
+<button name="lista">lista</button>
+ 
+          </div>
+          </body>
+          </html>
+          {% endblock %}
+          

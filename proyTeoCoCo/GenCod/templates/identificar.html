@@ -1,12 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
 {% if mensaje1 %}
-    <div class="container">
-        <h2>
-            {{mensaje1}}
-        </h2>
-        <a href="formularioCreado">Ver Formulario</a>
-    </div>
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Contenido</th>
+            <th scope="col">Ver</th>
+          </tr>
+        </thead>
+        
+        <tbody>
+          <tr>
+            <th scope="row">formulario</th>
+            <td> <a href="formularioCreado">Ver formulario</a></td>
+          </tr>  
+        </tbody>
+    
+        <tbody>
+            <tr>
+              <th scope="row">tabla</th>
+              <td> <a href="tablaCreada">Ver tabla</a></td>
+            </tr>  
+          </tbody>
+          <tbody>
+            <tr>
+              <th scope="row">modificar</th>
+              <td> <a href="modificar">Modificar datos</a></td>
+            </tr>  
+          </tbody>
+        
+      </table>
+
+</div>
+
 {% else %}
     <h3>{{mensaje2}}</h3>
 {% endif %}
