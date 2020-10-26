@@ -14,4 +14,5 @@ urlpatterns = [
     path('tablaCreada',views.tablaCreada,name='tablaCreada'),
     path('modificar',views.modificar,name='modificar'),
     path('crear',views.crear,name='crear'),
+    path('eliminar',views.eliminar,name='eliminar'),
 ]

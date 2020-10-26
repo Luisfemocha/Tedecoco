@@ -382,6 +382,8 @@ def generarHtmlTabla(mensajes):
           <thead>
           <tr> 
               """+contenido+"""
+              <th scope='col'> </th>
+              <th scope='col'> </th>
           </tr> 
           </thead>
           <tbody>  
@@ -391,6 +393,24 @@ def generarHtmlTabla(mensajes):
           {%for cont in obj %}
           <td>{{cont}}</td>         
           {%endfor%}
+          <td>
+           <form method="POST" action="modificar" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type='hidden' class='form-control form-control-lg' value='{{datos}}' name='datos'>
+              <input type="hidden" class="form-control form-control-lg" value="{{listaObjetos}}" name="listaObjetos">
+              <input type="hidden" class="form-control form-control-lg" value="{{obj}}" name="objeto">
+              <button type="submit" class="btn btn-warning btn-lg btn-primary">modificar</button>
+            </form>
+          </td>
+          <td>
+           <form method="POST" action="eliminar" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type='hidden' class='form-control form-control-lg' value='{{datos}}' name='datos'>
+              <input type="hidden" class="form-control form-control-lg" value="{{listaObjetos}}" name="listaObjetos">
+              <input type="hidden" class="form-control form-control-lg" value="{{obj}}" name="objeto">
+              <button type="submit" class="btn btn-danger btn-lg btn-primary">eliminar</button>
+            </form>
+          </td>
           </tr>
           {%endfor%}
           {%endif%}

@@ -116,6 +116,21 @@ def tablaCreada(request):
 def modificar(request):
     return HttpResponse("Falta eso")
 
+def eliminar(request):
+    pwd = os.path.dirname(__file__)
+    datos=request.POST['datos']
+    listaObjetos=request.POST['listaObjetos']
+    objeto=request.POST['objeto']
+    datos=ast.literal_eval(datos)
+    listaObjetos=ast.literal_eval(listaObjetos)
+    objeto=ast.literal_eval(objeto)
+    res=len(datos)
+    for lis in listaObjetos:
+        if lis==objeto:
+            listaObjetos.remove(objeto)
+    
+    return render(request,pwd +'\\templates\\generados\\tabla.html',{'listaObjetos':listaObjetos,'rango':res,'datos':datos})
+
 def crear(request):
     pwd = os.path.dirname(__file__)
     datosForm=[]
