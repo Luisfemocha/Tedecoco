@@ -2,19 +2,26 @@
           {% extends 'base.html' %}
           {% block content %}
           <html>
+
           <div class="container">
-          <head>VISTA home</head>
-          
-              <form action="mmmm" metod="post" id="formulario" nombre="formulario" >
-nombre:<br>
-<input type="string" name="nombre" id="nombre"><br>
-contrasena:<br>
-<input type="password" name="contrasena" id="contrasena"><br>
-telefono:<br>
-<input type="number" name="telefono" id="telefono"><br>
+          <h3>VISTA home</h3>
+              <form action="crear" metod="post" id="formulario" nombre="formulario" >
+<div class='form-group'>
+<label for=nombreclass ='control-label'>nombre</label>
+<input type="string" name="nombre" id="nombre"class='form-control'><br>
+</div>
+<div class='form-group'>
+<label for=contrasenaclass ='control-label'>contrasena</label>
+<input type="password" name="contrasena" id="contrasena"class='form-control'><br>
+</div>
+<div class='form-group'>
+<label for=telefonoclass ='control-label'>telefono</label>
+<input type="number" name="telefono" id="telefono"class='form-control'><br>
+</div>
+<input type='hidden' class='form-control form-control-lg' value='{{datos}}' name='datos'>
+<button type='submit' class='btn btn-success'>guardar</button>
 </form>
-<button name="guardar">guardar</button>
-<button name="lista">lista</button>
+<a href='tablaCreada' class='btn btn-info'>lista</a>
  
           </div>
           </body>

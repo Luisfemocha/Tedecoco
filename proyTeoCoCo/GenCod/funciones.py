@@ -162,29 +162,32 @@ def arreglar(k):
     return j
 
 def htmlFormulario(triadas,vistas,forms):
-
   mensajes=[]
   for triada in triadas:
 
     for vista in vistas:
-      
-      if(re.match(r"(\bFORM\b) (?<!\S)\w+(?!\S)", triada[2])and re.match(r"(\bVISTA\b) (\bhome\b)", vista)):
+      if(re.match(r"(\bFORM\b) (?<!\S)\w+(?!\S)", triada[2]) and re.match(r"(\bVISTA\b) (\bhome\b)", vista)):
           nombre_form=triada[2]
           nombre_form=nombre_form.replace('FORM ', '') 
           tipos_datos, nombres_atr= atributos(triadas, forms)     
-          mensajes.append((vistas.index(vista),"<form action="+"\""+"mmmm"+"\""+" metod="+"\""+"post"+"\""+" id="+"\""+nombre_form+"\" "+"nombre="+"\""+nombre_form+"\" "+">"))
+          mensajes.append((vistas.index(vista),"<form action="+"\""+"crear"+"\""+" metod="+"\""+"post"+"\""+" id="+"\""+nombre_form+"\" "+"nombre="+"\""+nombre_form+"\" "+">"))
           for i in range(len(tipos_datos)):
-            mensajes.append((vistas.index(vista),nombres_atr[i]+":<br>"))
-            mensajes.append((vistas.index(vista),"<input type="+"\""+tipos_datos[i]+"\""+" name="+"\""+nombres_atr[i]+"\""+" id="+"\""+nombres_atr[i]+"\""+"><br>"))
-          mensajes.append((vistas.index(vista),"</form>"))
+            mensajes.append((vistas.index(vista),"<div class='form-group'>"))
+            mensajes.append((vistas.index(vista),"<label for="+nombres_atr[i]+"class ='control-label'>"+nombres_atr[i]+"</label>"))
+            mensajes.append((vistas.index(vista),"<input type="+"\""+tipos_datos[i]+"\""+" name="+"\""+nombres_atr[i]+"\""+" id="+"\""+nombres_atr[i]+"\""+"class='form-control'><br>"))
+            mensajes.append((vistas.index(vista),"</div>"))
+          mensajes.append((vistas.index(vista),"<input type='hidden' class='form-control form-control-lg' value='{{datos}}' name='datos'>"))
   for vista in vistas:
     if(re.match(r"(\bVISTA\b) (\bhome\b)", vista)):
       for triada in triadas:
         if(re.match(r"(\bBOTON\b) (?<!\S)\w+(?!\S)", triada[2] )and re.match(r"(\bVISTA\b) (\bhome\b)", triada[0])):
           result = re.match(r'\S*\s(\S*)', triada[2])
           p=result.group(1)
-
-          mensajes.append((vistas.index(vista),("<button name="+"\""+p+"\""+">"+p+"</button>")))
+          if p == "guardar":
+            mensajes.append((vistas.index(vista),("<button type='submit' class='btn btn-success'>"+p+"</button>")))
+            mensajes.append((vistas.index(vista),"</form>"))
+          else:
+            mensajes.append((vistas.index(vista),("<a href='tablaCreada' class='btn btn-info'>"+p+"</a>")))
   return mensajes
 
 
@@ -205,9 +208,9 @@ def generarHtmlFormulario(mensajes,vistas):
           {% extends 'base.html' %}
           {% block content %}
           <html>
+
           <div class="container">
-          <head>"""+vistas[i]+"""</head>
-          
+          <h3>"""+vistas[i]+"""</h3>
               """+contenido+""" 
           </div>
           </body>
@@ -379,8 +382,18 @@ def generarHtmlTabla(mensajes):
           <tr> 
               """+contenido+"""
           </tr> 
-          </thead> 
+          </thead>
+          <tbody>  
+          {%if objetos|length > 0 %}
+          <tr>
+          {%for obj in objetos %}
+          <td>{{obj}}</td>         
+          {%endfor%}
+          </tr>
+          {%endif%}
+          </tbody> 
           </table>
+          <a href="#" class='btn btn-info'>Volver</a>
           </div>
           </body>
           </html>

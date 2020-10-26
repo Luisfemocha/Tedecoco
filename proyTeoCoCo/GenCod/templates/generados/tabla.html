@@ -13,8 +13,18 @@
 <th scope='col'>telefono</th>
 
           </tr> 
-          </thead> 
+          </thead>
+          <tbody>  
+          {%if objetos|length > 0 %}
+          <tr>
+          {%for obj in objetos %}
+          <td>{{obj}}</td>         
+          {%endfor%}
+          </tr>
+          {%endif%}
+          </tbody> 
           </table>
+          <a href="#" class='btn btn-info'>Volver</a>
           </div>
           </body>
           </html>

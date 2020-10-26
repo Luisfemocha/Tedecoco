@@ -12,6 +12,7 @@ import xml.etree.ElementTree as ET
 import re
 from xml.dom import minidom
 import codecs
+import ast 
 from .funciones import *
 
 def index(request):
@@ -86,22 +87,18 @@ def identificar(request):
         mensajes=htmlFormulario(triadas,vistas,forms)
         contenido=generarHtmlFormulario(mensajes,vistas)
         botones,tipos_datos, nombres_atr=datosTabla(triadas)
-        print("/////////////")
-        print(botones)
-        print(tipos_datos)
-        print(nombres_atr)
-        print("/////////////")
         mensajes2=htmlTabla(nombres_atr)
-        print(mensajes2)
         generarHtmlTabla(mensajes2) 
-        return render(request,"identificar.html",{'mensaje1':"Existe un formulario",'jsonList': objetos})
+        return render(request,"identificar.html",{'mensaje1':"Existe un formulario",'jsonList': objetos,'datos':nombres_atr})
     else:
         return render(request,"identificar.html",{'mensaje2':"No Hay formulario",'jsonList': objetos})
 
 
 def formularioCreado(request):
+    datos=request.POST['datos']
+    res=ast.literal_eval(datos) 
     pwd = os.path.dirname(__file__)
-    return render(request,pwd +'\\templates\\generados\\formulario.html')
+    return render(request,pwd +'\\templates\\generados\\formulario.html',{'datos':res})
 
 def tablaCreada(request):
     pwd = os.path.dirname(__file__)
@@ -109,3 +106,17 @@ def tablaCreada(request):
 
 def modificar(request):
     return HttpResponse("Falta eso")
+
+def crear(request):
+    pwd = os.path.dirname(__file__)
+    datosForm=[]
+    datos=request.GET['datos']
+    objeto={}
+    res=ast.literal_eval(datos)
+    for x in res:
+        datosForm.append(request.GET[x])
+    for i in range(len(datosForm)):
+        objeto[res[i]]=datosForm[i]
+    json_data = json.dumps(objeto)
+    tamaño=len(res)
+    return render(request,pwd +'\\templates\\generados\\tabla.html',{'objetos':datosForm,'rango':tamaño})

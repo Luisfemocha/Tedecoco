@@ -13,7 +13,11 @@
         <tbody>
           <tr>
             <th scope="row">formulario</th>
-            <td> <a href="formularioCreado">Ver formulario</a></td>
+            <td> <form method="POST" action="formularioCreado" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type="hidden" class="form-control form-control-lg" value="{{datos}}" name="datos">
+              <button type="submit" class="btn btn-dark btn-lg btn-primary">Ver formulario</button>
+            </form></td>
           </tr>  
         </tbody>
     
@@ -23,17 +27,10 @@
               <td> <a href="tablaCreada">Ver tabla</a></td>
             </tr>  
           </tbody>
-          <tbody>
-            <tr>
-              <th scope="row">modificar</th>
-              <td> <a href="modificar">Modificar datos</a></td>
-            </tr>  
-          </tbody>
         
       </table>
 
 </div>
-
 {% else %}
     <h3>{{mensaje2}}</h3>
 {% endif %}
