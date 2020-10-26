@@ -16,6 +16,7 @@
             <td> <form method="POST" action="formularioCreado" enctype="multipart/form-data">
               {% csrf_token %}
               <input type="hidden" class="form-control form-control-lg" value="{{datos}}" name="datos">
+              <input type="hidden" class="form-control form-control-lg" value="{{listaObjetos}}" name="listaObjetos">
               <button type="submit" class="btn btn-dark btn-lg btn-primary">Ver formulario</button>
             </form></td>
           </tr>  
@@ -24,7 +25,12 @@
         <tbody>
             <tr>
               <th scope="row">tabla</th>
-              <td> <a href="tablaCreada">Ver tabla</a></td>
+              <td> <form method="POST" action="tablaCreada" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" class="form-control form-control-lg" value="{{datos}}" name="datos">
+                <input type="hidden" class="form-control form-control-lg" value="{{listaObjetos}}" name="listaObjetos">
+                <button type="submit" class="btn btn-dark btn-lg btn-primary">Ver tabla</button>
+              </form></td>
             </tr>  
           </tbody>
         

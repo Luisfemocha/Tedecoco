@@ -15,16 +15,23 @@
           </tr> 
           </thead>
           <tbody>  
-          {%if objetos|length > 0 %}
+          {%if listaObjetos|length > 0 %}
+          {%for obj in listaObjetos %}
           <tr>
-          {%for obj in objetos %}
-          <td>{{obj}}</td>         
+          {%for cont in obj %}
+          <td>{{cont}}</td>         
           {%endfor%}
           </tr>
+          {%endfor%}
           {%endif%}
           </tbody> 
           </table>
-          <a href="#" class='btn btn-info'>Volver</a>
+          <form method="POST" action="formularioCreado" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type='hidden' class='form-control form-control-lg' value='{{datos}}' name='datos'>
+              <input type="hidden" class="form-control form-control-lg" value="{{listaObjetos}}" name="listaObjetos">
+              <button type="submit" class="btn btn-info btn-lg btn-primary">volver</button>
+            </form>
           </div>
           </body>
           </html>

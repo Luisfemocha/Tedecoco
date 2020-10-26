@@ -88,21 +88,30 @@ def identificar(request):
         contenido=generarHtmlFormulario(mensajes,vistas)
         botones,tipos_datos, nombres_atr=datosTabla(triadas)
         mensajes2=htmlTabla(nombres_atr)
-        generarHtmlTabla(mensajes2) 
-        return render(request,"identificar.html",{'mensaje1':"Existe un formulario",'jsonList': objetos,'datos':nombres_atr})
+        generarHtmlTabla(mensajes2)
+        res=[] 
+        return render(request,"identificar.html",{'mensaje1':"Existe un formulario",'jsonList': objetos,'datos':nombres_atr,'listaObjetos':res})
     else:
         return render(request,"identificar.html",{'mensaje2':"No Hay formulario",'jsonList': objetos})
 
 
 def formularioCreado(request):
     datos=request.POST['datos']
-    res=ast.literal_eval(datos) 
+    lista=request.POST['listaObjetos']
+    res=ast.literal_eval(datos)
+    res2= ast.literal_eval(lista)
     pwd = os.path.dirname(__file__)
-    return render(request,pwd +'\\templates\\generados\\formulario.html',{'datos':res})
+    return render(request,pwd +'\\templates\\generados\\formulario.html',{'datos':res,'listaObjetos':res2})
 
 def tablaCreada(request):
     pwd = os.path.dirname(__file__)
-    return render(request,pwd +'\\templates\\generados\\tabla.html')
+    datos=request.POST['datos']
+    lista=request.POST['listaObjetos']
+    listaObjetos=ast.literal_eval(lista)
+    objeto={}
+    res=ast.literal_eval(datos)
+    tamaño=len(res)
+    return render(request,pwd +'\\templates\\generados\\tabla.html',{'listaObjetos':listaObjetos,'rango':tamaño,'datos':res})
 
 def modificar(request):
     return HttpResponse("Falta eso")
@@ -111,6 +120,8 @@ def crear(request):
     pwd = os.path.dirname(__file__)
     datosForm=[]
     datos=request.GET['datos']
+    lista=request.GET['listaObjetos']
+    listaObjetos=ast.literal_eval(lista)
     objeto={}
     res=ast.literal_eval(datos)
     for x in res:
@@ -118,5 +129,6 @@ def crear(request):
     for i in range(len(datosForm)):
         objeto[res[i]]=datosForm[i]
     json_data = json.dumps(objeto)
+    listaObjetos.append(datosForm)
     tamaño=len(res)
-    return render(request,pwd +'\\templates\\generados\\tabla.html',{'objetos':datosForm,'rango':tamaño})
+    return render(request,pwd +'\\templates\\generados\\tabla.html',{'listaObjetos':listaObjetos,'rango':tamaño,'datos':res})

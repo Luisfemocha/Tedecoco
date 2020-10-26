@@ -177,6 +177,7 @@ def htmlFormulario(triadas,vistas,forms):
             mensajes.append((vistas.index(vista),"<input type="+"\""+tipos_datos[i]+"\""+" name="+"\""+nombres_atr[i]+"\""+" id="+"\""+nombres_atr[i]+"\""+"class='form-control'><br>"))
             mensajes.append((vistas.index(vista),"</div>"))
           mensajes.append((vistas.index(vista),"<input type='hidden' class='form-control form-control-lg' value='{{datos}}' name='datos'>"))
+          mensajes.append((vistas.index(vista),"<input type='hidden' class='form-control form-control-lg' value='{{listaObjetos}}' name='listaObjetos'>"))
   for vista in vistas:
     if(re.match(r"(\bVISTA\b) (\bhome\b)", vista)):
       for triada in triadas:
@@ -187,7 +188,7 @@ def htmlFormulario(triadas,vistas,forms):
             mensajes.append((vistas.index(vista),("<button type='submit' class='btn btn-success'>"+p+"</button>")))
             mensajes.append((vistas.index(vista),"</form>"))
           else:
-            mensajes.append((vistas.index(vista),("<a href='tablaCreada' class='btn btn-info'>"+p+"</a>")))
+            mensajes.append((vistas.index(vista),("<form method='POST' action='tablaCreada' enctype='multipart/form-data'>{% csrf_token %}<input type='hidden' class='form-control form-control-lg' value='{{datos}}' name='datos'><input type='hidden' class='form-control form-control-lg' value='{{listaObjetos}}' name='listaObjetos'><button type='submit' class='btn btn-info btn-lg btn-primary'>"+p+"</button></form>")))
   return mensajes
 
 
@@ -384,16 +385,23 @@ def generarHtmlTabla(mensajes):
           </tr> 
           </thead>
           <tbody>  
-          {%if objetos|length > 0 %}
+          {%if listaObjetos|length > 0 %}
+          {%for obj in listaObjetos %}
           <tr>
-          {%for obj in objetos %}
-          <td>{{obj}}</td>         
+          {%for cont in obj %}
+          <td>{{cont}}</td>         
           {%endfor%}
           </tr>
+          {%endfor%}
           {%endif%}
           </tbody> 
           </table>
-          <a href="#" class='btn btn-info'>Volver</a>
+          <form method="POST" action="formularioCreado" enctype="multipart/form-data">
+              {% csrf_token %}
+              <input type='hidden' class='form-control form-control-lg' value='{{datos}}' name='datos'>
+              <input type="hidden" class="form-control form-control-lg" value="{{listaObjetos}}" name="listaObjetos">
+              <button type="submit" class="btn btn-info btn-lg btn-primary">volver</button>
+            </form>
           </div>
           </body>
           </html>

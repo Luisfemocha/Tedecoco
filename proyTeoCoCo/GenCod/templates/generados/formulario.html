@@ -19,9 +19,10 @@
 <input type="number" name="telefono" id="telefono"class='form-control'><br>
 </div>
 <input type='hidden' class='form-control form-control-lg' value='{{datos}}' name='datos'>
+<input type='hidden' class='form-control form-control-lg' value='{{listaObjetos}}' name='listaObjetos'>
 <button type='submit' class='btn btn-success'>guardar</button>
 </form>
-<a href='tablaCreada' class='btn btn-info'>lista</a>
+<form method='POST' action='tablaCreada' enctype='multipart/form-data'>{% csrf_token %}<input type='hidden' class='form-control form-control-lg' value='{{datos}}' name='datos'><input type='hidden' class='form-control form-control-lg' value='{{listaObjetos}}' name='listaObjetos'><button type='submit' class='btn btn-info btn-lg btn-primary'>lista</button></form>
  
           </div>
           </body>
