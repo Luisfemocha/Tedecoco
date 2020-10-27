@@ -429,3 +429,40 @@ def generarHtmlTabla(mensajes):
           """
   f.write(mensaje)
   f.close()
+
+
+def htmlModificar(datos,objeto):
+  mensajes=[]
+  mensajes.append("<form action="+"\""+"editar"+"\""+" metod="+"\""+"post"+"\">")
+  for x in range(len(datos)):
+    mensajes.append("<div class='form-group'>")
+    mensajes.append("<label for="+datos[x]+"class ='control-label'>"+datos[x]+"</label>")
+    mensajes.append("<input type="+"\""+datos[x]+"\""+" name="+"\""+datos[x]+"\""+" id="+"\""+datos[x]+"\""+"value='"+objeto[x]+"' class='form-control' placeholder="+objeto[x]+"><br>")
+    mensajes.append("</div>")
+  mensajes.append("<input type='hidden' class='form-control form-control-lg' value='{{datos}}' name='datos'>")
+  mensajes.append("<input type='hidden' class='form-control form-control-lg' value='{{listaObjetos}}' name='listaObjetos'>")
+  mensajes.append("<input type='hidden' class='form-control form-control-lg' value='{{objeto}}' name='objeto'>")
+  mensajes.append("<button type='submit' class='btn btn-warning'>modificar</button>")
+  mensajes.append("</form>")
+  return mensajes
+
+def crearModificar(mensajes):
+  pwd = os.path.dirname(__file__)
+  contenido=""
+  for i in range(len(mensajes)):
+    contenido += mensajes[i] + '\n'
+  f=open(pwd + '\\templates\\generados\\modificar.html','wt')
+  mensaje = """
+          {% extends 'base.html' %}
+          {% block content %}
+          <html>
+          <div class="container">
+          <head>"""+"modificar"+"""</head>
+              """+contenido+""" 
+          </div>
+          </body>
+          </html>
+          {% endblock %}
+          """
+  f.write(mensaje)
+  f.close()

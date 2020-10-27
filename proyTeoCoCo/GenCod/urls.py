@@ -15,4 +15,5 @@ urlpatterns = [
     path('modificar',views.modificar,name='modificar'),
     path('crear',views.crear,name='crear'),
     path('eliminar',views.eliminar,name='eliminar'),
+    path('editar',views.editar,name='editar'),
 ]

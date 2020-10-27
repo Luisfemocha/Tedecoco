@@ -114,7 +114,17 @@ def tablaCreada(request):
     return render(request,pwd +'\\templates\\generados\\tabla.html',{'listaObjetos':listaObjetos,'rango':tamaño,'datos':res})
 
 def modificar(request):
-    return HttpResponse("Falta eso")
+    pwd = os.path.dirname(__file__)
+    datos=request.POST['datos']
+    listaObjetos=request.POST['listaObjetos']
+    objeto=request.POST['objeto']
+    datos=ast.literal_eval(datos)
+    listaObjetos=ast.literal_eval(listaObjetos)
+    objeto=ast.literal_eval(objeto)
+    res=len(datos)
+    mensajes=htmlModificar(datos,objeto)
+    crearModificar(mensajes)
+    return render(request,pwd +'\\templates\\generados\\modificar.html',{'listaObjetos':listaObjetos,'objeto':objeto,'datos':datos})
 
 def eliminar(request):
     pwd = os.path.dirname(__file__)
@@ -147,3 +157,23 @@ def crear(request):
     listaObjetos.append(datosForm)
     tamaño=len(res)
     return render(request,pwd +'\\templates\\generados\\tabla.html',{'listaObjetos':listaObjetos,'rango':tamaño,'datos':res})
+
+def editar(request):
+    pwd = os.path.dirname(__file__)
+    datos=request.GET['datos']
+    listaObjetos=request.GET['listaObjetos']
+    objeto=request.GET['objeto']
+    objeto=ast.literal_eval(objeto)
+    datosForm=[]
+    listaNueva=[]
+    res=ast.literal_eval(datos)
+    listaObjetos=ast.literal_eval(listaObjetos)
+    for x in res:
+        datosForm.append(request.GET[x])
+    tamaño= len(datos)
+    for lis in listaObjetos:
+        if lis==objeto:
+            listaNueva.append(datosForm)
+        else:
+            listaNueva.append(lis)
+    return render(request,pwd +'\\templates\\generados\\tabla.html',{'listaObjetos':listaNueva,'rango':tamaño,'datos':datos})

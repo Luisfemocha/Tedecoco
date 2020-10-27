@@ -1,0 +1,30 @@
+
+          {% extends 'base.html' %}
+          {% block content %}
+          <html>
+          <div class="container">
+          <head>modificar</head>
+              <form action="editar" metod="post">
+<div class='form-group'>
+<label for=nombreclass ='control-label'>nombre</label>
+<input type="nombre" name="nombre" id="nombre"value='CARLOS CATANO' class='form-control' placeholder=CARLOS CATANO><br>
+</div>
+<div class='form-group'>
+<label for=contrasenaclass ='control-label'>contrasena</label>
+<input type="contrasena" name="contrasena" id="contrasena"value='3243' class='form-control' placeholder=3243><br>
+</div>
+<div class='form-group'>
+<label for=telefonoclass ='control-label'>telefono</label>
+<input type="telefono" name="telefono" id="telefono"value='34234' class='form-control' placeholder=34234><br>
+</div>
+<input type='hidden' class='form-control form-control-lg' value='{{datos}}' name='datos'>
+<input type='hidden' class='form-control form-control-lg' value='{{listaObjetos}}' name='listaObjetos'>
+<input type='hidden' class='form-control form-control-lg' value='{{objeto}}' name='objeto'>
+<button type='submit' class='btn btn-warning'>modificar</button>
+</form>
+ 
+          </div>
+          </body>
+          </html>
+          {% endblock %}
+          
