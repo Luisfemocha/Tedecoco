@@ -17,13 +17,10 @@ import operator
 import os
 
 
-
-
 def dato(id,A):
     for i in range(2, len(A)):
         if id == A[i]["@id"]:
             return A[i]["@value"]
-
 
 
 def flecha(A):
@@ -97,6 +94,7 @@ def triadaFormulario(A):
     #print("No es correcta la sintaxis")
   return (desdeHasta)
 
+
 def triadaEstructural( A):
   listaFlechas= flecha(A) # Se encuentran todas las flechas
   desdeHasta=[] # lista de tuplas de la forma (idDesde,desde,hasta)
@@ -114,10 +112,7 @@ def triadaEstructural( A):
     for j in range(len(desde)):
       if(final[i][0]== desde[j][2]):        
         relacion.append((desde[j][1],  dato(final[i][0], A) ,(final[i][2]) ))
-        
-
   return  relacion
-
 
 
 def generarHTML(A):
@@ -160,6 +155,7 @@ def arreglar(k):
     j=re.split(r'[<br>]*[*]',k)
     j.pop(0)
     return j
+
 
 def htmlFormulario(triadas,vistas,forms):
   mensajes=[]
@@ -222,6 +218,7 @@ def generarHtmlFormulario(mensajes,vistas):
       f.close()
   return contenido
 
+
 def concepto(A):
     listaConceptos=[]
     for i in range(2, len(A)):
@@ -229,6 +226,7 @@ def concepto(A):
             listaConceptos.append(A[i]["@value"])
             #print ("Es un concepto que dice: ", A[i]["@value"])
     return listaConceptos
+
 
 def revisarDiagrama(A):
   desdeHasta=[]
@@ -304,8 +302,6 @@ def revisarDiagrama(A):
   return res
 
 
-
-
 def revisarConceptos(A):
   listaConceptos=[]
   listaConceptos= concepto(A)
@@ -322,6 +318,7 @@ def revisarConceptos(A):
     else:
       return False
   return res
+
 
 def datosTabla(triadas):
   botones=[]
@@ -359,11 +356,13 @@ def datosModificar(triadas):
         botones.append(triada[2][6:])
   return botones
 
+
 def htmlTabla(nombres_atributos):
   mensajes=[]
   for i in range(len(nombres_atributos)):
     mensajes.append("<th scope='col'>"+nombres_atributos[i]+"</th>")
   return mensajes
+
 
 def generarHtmlTabla(mensajes):
   pwd = os.path.dirname(__file__)
@@ -445,6 +444,7 @@ def htmlModificar(datos,objeto):
   mensajes.append("<button type='submit' class='btn btn-warning'>modificar</button>")
   mensajes.append("</form>")
   return mensajes
+
 
 def crearModificar(mensajes):
   pwd = os.path.dirname(__file__)
